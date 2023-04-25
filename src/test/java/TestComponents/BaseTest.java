@@ -1,9 +1,13 @@
 package TestComponents;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,7 +30,7 @@ public class BaseTest {
 
     public WebDriver initializerDriver() throws IOException {
         Properties properties = new Properties();
-        FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "\\src\\main\\resources\\GlobalData.properties");
+        FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "\\src\\main\\java\\resources\\GlobalData.properties");
         properties.load(file);
         String browserName = properties.getProperty("browser");
 
@@ -57,6 +61,13 @@ public class BaseTest {
 
         });
         return data;
+    }
+    public String getScreenShoot(String testCaseName, WebDriver driver) throws IOException {
+        TakesScreenshot takesScreenshot = (TakesScreenshot)driver;
+        File source = takesScreenshot.getScreenshotAs(OutputType.FILE);
+        File file = new File(System.getProperty("user.dir") + "\\reports\\" + testCaseName + ".png");
+        FileUtils.copyFile(source, file);
+        return System.getProperty("user.dir") + "\\reports\\" + testCaseName + ".png";
     }
 
     @BeforeMethod(alwaysRun = true)
