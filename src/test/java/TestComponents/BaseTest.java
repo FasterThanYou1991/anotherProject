@@ -32,7 +32,11 @@ public class BaseTest {
         Properties properties = new Properties();
         FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "\\src\\main\\java\\resources\\GlobalData.properties");
         properties.load(file);
-        String browserName = properties.getProperty("browser");
+        // This command allow us to run tests from command line using different browsers.
+        // example of command -> mvn test PRegression -Dbrowser=firefox -> we're choosing to use firefox
+        // example 2 of command -> mvn test PRegression -> so by default chrome should be picked
+        // PRegression is the profile set in pom.xml
+        String browserName = System.getProperty("browser")!=null ? System.getProperty("browser") : properties.getProperty("browser");
 
         if(browserName.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
@@ -45,6 +49,11 @@ public class BaseTest {
         else if(browserName.equalsIgnoreCase("firefox"))
         {
             WebDriverManager.firefoxdriver().setup();
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+            driver.manage().window().maximize();
+        }else if(browserName.equalsIgnoreCase("edge"))
+        {
+            WebDriverManager.edgedriver().setup();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             driver.manage().window().maximize();
         }

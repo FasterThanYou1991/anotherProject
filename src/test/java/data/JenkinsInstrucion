@@ -1,0 +1,39 @@
+Jenkins instruction:
+
+prerequisites: Jenkins should be installed
+
+1. Open commandline where jenkins is located
+    a) Start jenkins in your local server using this command -> java -jar jenkins.war -httpPort=9090
+    b) open in browser -> localhost:9090 and wait for jenkins getting to work
+    c) login to jenkins
+2. We have to create new job for our needs on Jenkins
+    a) Select "New Item" on left panel
+    b) Name the new Job -> Select Freestyle project
+    c) First we have to select from where the code will be taken
+        I) Select "Advanced.." option to select "Use custom workspace"
+        II) Select the path from your IDE of your project into input
+    d) Build -> Select dropdown and select "Invoke top-level Maven targets" -> Because in this project we're using maven
+        I) We have to enter command like "test -<profileName if we want it without brackets> -Dbrowser=<browser>"
+    e) Save the Jon
+    d) Build now and test it
+
+
+    Configure the JOB
+
+1. In dashboard open "Configure"
+2. Find checkbox called "This project is parameterized"
+    a) In name type "browserName"
+    b) In "choices" type all browsers, which you want to use for that job
+    c) Go to "Build" and change the command
+        I) test -<profileName if we want it without brackets> -Dbrowser="$browserName" -> "$browserName" is a variable now for browsers
+
+    d) save the configuration
+    e) Build with Parameters and select which browser you want to invoke
+
+3. Set the variable for profiles as well
+    a) open "Configure"
+    b) Add another parameter dropdown and select "choice parameter"
+    c) Called as "Profile"
+    d) and add your profiles names in to choices
+    e) Change the command test -P"$Profile" -Dbrowser="$browserName"
+    f) Build with parameter and check new parameters
