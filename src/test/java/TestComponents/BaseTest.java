@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -38,13 +39,20 @@ public class BaseTest {
         // PRegression is the profile set in pom.xml
         String browserName = System.getProperty("browser")!=null ? System.getProperty("browser") : properties.getProperty("browser");
 
-        if(browserName.equalsIgnoreCase("chrome")) {
+        if(browserName.contains("chrome")) {
+
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.addArguments("--remote-allow-origins=*");
+            //option allows to run tests without opening browser
+            if(browserName.contains("headless"))
+            {
+                chromeOptions.addArguments("headless");
+            }
+
             driver = new ChromeDriver(chromeOptions);
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.manage().window().maximize();
+            driver.manage().window().setSize(new Dimension(1440,900));
         }
         else if(browserName.equalsIgnoreCase("firefox"))
         {

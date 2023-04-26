@@ -37,3 +37,13 @@ prerequisites: Jenkins should be installed
     d) and add your profiles names in to choices
     e) Change the command test -P"$Profile" -Dbrowser="$browserName"
     f) Build with parameter and check new parameters
+
+4. Set the new parameter for browsers called "chromeheadless" -> this is for running test without opening the browser
+   In BaseTest.class we prepared the code for headless mode in chrome browser
+
+5. Schedule the Job
+    a) Open configure option
+    b) Find "Build Triggers" and select checkbox "Build periodically"
+        I) enter in "Schedule" when we want to trigger the job daily.
+        II)"******" when first "**" is responsible minutes, second is hours. We can mess with it to check.
+    c) Server should be ON once we schedule the job.
